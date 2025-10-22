@@ -7,11 +7,16 @@ import { setDoc } from "firebase/firestore";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { UserDetailContext } from './../context/UserDetailContext.tsx'; 
+import Header from "../src/components/custom/Header.tsx";
+import Promtbox from "@/components/custom/Promtbox.tsx";
+import { useLocation } from "react-router-dom";
+import MyProjects from "@/components/custom/MyProjects.tsx";
 
 
 function Workspace() {
   const { user, isLoaded } = useUser();
   const {userDetails,setUserDetails}=useContext(UserDetailContext);
+  const location = useLocation();
 
    useEffect(() => {
     user && CreateNewUser();
@@ -56,7 +61,12 @@ function Workspace() {
 }
   return (
     <div>
-      Workspace
+      <Header/>
+         {location.pathname==='/Workspace' && 
+         <div>
+         <Promtbox/>
+         <MyProjects/>
+         </div>}
       <Outlet />
     </div>
   );
