@@ -8,10 +8,13 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import Workspace from '../workspace/index.tsx';
 import { UserDetailContext } from './../context/UserDetailContext.tsx';
 import { useState } from 'react';
-
+import Outline from '../workspace/project/outline/index.tsx';
 const router = createBrowserRouter([
 {path:"/", element:<App/>} ,
 {path:"/workspace",element:<Workspace/>,
+children:[
+  {path:'project/:projectId/outline' , element: <Outline/>}
+]
 }
 ]);
 

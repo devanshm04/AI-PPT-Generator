@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   InputGroup,
   InputGroupAddon,
@@ -16,10 +16,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { PlusIcon } from 'lucide-react'
+import { Loader2Icon, PlusIcon } from 'lucide-react'
 import { ArrowUp } from 'lucide-react'
 
+// use uuid that generated ui id random automatically
+import { v4 as uuidv4 } from 'uuid';
+import { doc, setDoc } from 'firebase/firestore';
+import { useUser } from '@clerk/clerk-react';
+import { firebaseDB } from './../../../config/FirebaseConfig';
+import { useNavigate } from 'react-router-dom'
+
 const Promtbox = () => {
+   
+     const [userInput, setUserInput] = useState<string>();
+     const {user}=useUser();
+     const[loading,setLoading]=useState(false);
+     const navigate = useNavigate();
+     const[noofslider,setNoofslider]=useState<string>('4 to 6');
+
+
+
+     const CreateAndSaveProject = async () => {
+      // save project to db logic here
+        const projectId = uuidv4();
+        setLoading(true);
+        await setDoc(doc(firebaseDB,'projects',projectId),{
+          projectid: projectId,
+          userInputPrompt:userInput,
+          createdBy:user?.primaryEmailAddress?.emailAddress,
+          createdAt:Date.now(),
+          noofslider:noofslider,
+        })
+        setLoading(false);
+        navigate('/workspace/project/'+projectId+'/outline');
+     }
+
   return (
     <div className='w-full flex items-center justify-center mt-28'>
     <div className='flex flex-col items-center justify-center space-y-3'>
@@ -32,12 +63,13 @@ const Promtbox = () => {
             rows={4}
             cols={50}
             className='min-h-32'
+            onChange={(e) => setUserInput(e.target.value)}
           />
           <InputGroupAddon align={'block-end'}>
             {/* <InputGroupButton>
               <PlusIcon/>
             </InputGroupButton> */}
-              <Select>
+              <Select onValueChange={(value)=>setNoofslider(value)}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select No of Slider" />
       </SelectTrigger>
@@ -54,8 +86,11 @@ const Promtbox = () => {
      <InputGroupButton 
      variant={'default'}
      className='rounded-full ml-auto'
-     size={'icon-sm'}>
-        <ArrowUp/>
+     size={'icon-sm'}
+      onClick={()=>CreateAndSaveProject()}
+      disabled={!userInput}
+    >
+       {loading?<Loader2Icon className='animate-spin'/>: <ArrowUp/>}
      </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
