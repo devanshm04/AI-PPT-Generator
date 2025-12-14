@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProfesionalSlider from './../../assets/professional.jpg';
 import MinimalistSlider from './../../assets/Minimalist-White.jpg';
 import ModernGradientSlider from './../../assets/modern-gradient.jpg';
@@ -93,23 +93,27 @@ const Design_Styles=
 
 
 const SliderStyle = () => {
+    const[selectedStyle,setSelectedStyle] = useState<string>();
   return (
     <div className='mt-5'>
         <h2 className='font-bold text-xl'>Select Slider Style</h2>
         <div className='grid grid-cols-2 md:grid-cols-3 gap-5 mt-3'>
             {Design_Styles.map((design,index)=>(
-                <div key = {index}>
-                    <img src={design.bannerImage} alt={design.styleName} 
+                <div
+                  key={index}
+                  className={`cursor-pointer ${design.styleName === selectedStyle ? 'p-1 rounded-2xl border-2' : ''}`}
+                  onClick={()=>setSelectedStyle(design.styleName)}
+                >
+                    <img src={design.bannerImage} alt={design.styleName}
                     width={300}
                     height={300}
-                    className='w-full rounded-2xl object-cover'
-                    
+                    className='w-full rounded-2xl object-cover h-[120px] hover:scale-105 transition-all'
                     />
+                    <h2 className='font-medium text-center mt-1'>{design.styleName}</h2>
                 </div>
             ))}
         </div>
     </div>
   )
 }
-
 export default SliderStyle
