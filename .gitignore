@@ -25,3 +25,6 @@ dist-ssr
 
 .env
 
+# Ignore local config with secrets
+config/
+
