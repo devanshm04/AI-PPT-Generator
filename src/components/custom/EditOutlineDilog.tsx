@@ -23,7 +23,7 @@ import { Textarea } from '../ui/textarea'
 
 // Parent ko batana: “update kar do”
 
-const EditOutlineDilog = ({Children,outlineData,onUpdate}:any) => {
+const EditOutlineDilog = ({children, outlineData, onUpdate}: any) => {
     // outlineData → slide ka current data
     // onUpdate → parent ka function (callback)
 
@@ -53,7 +53,7 @@ const EditOutlineDilog = ({Children,outlineData,onUpdate}:any) => {
          <Dialog open={OpenDialog} onOpenChange={setOpenDialog}>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline">{Children}</Button>
+          {children}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

@@ -3,7 +3,7 @@ import { doc,getDoc } from 'firebase/firestore';
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import SliderStyle from '../../../src/components/custom/SliderStyle';
-import OutlineSection from '@/components/custom/OutlineSection';
+import OutlineSection from '../../../src/components/custom/OutlineSection'
 
 const OUTLINE_PROMPT=`
 Generate a PowerPoint slide outline for the topic {userInput}. Create {noofslide} in total. Each slide should include a topic name and a 2-line descriptive outline that clearly explains what content the slide will cover.
@@ -90,9 +90,9 @@ const Outline = () => {
     )
     }
     
-    const onGenerateSlider=()=>{
-      
-    }
+    // const onGenerateSlider=()=>{
+
+    // }
 
   return (
     <div className='flex justify-center'>

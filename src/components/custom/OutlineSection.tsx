@@ -2,7 +2,7 @@ import React from 'react'
 import { Skeleton } from '../ui/skeleton'
 import type { Outline } from 'workspace/project/outline'
 import { Button } from '../ui/button'
-import { ArrowRight, Edit, Ghost, Sparkle, Sparkles } from 'lucide-react'
+import { ArrowRight, Edit, Edit2Icon, Edit3, Ghost, Sparkle, Sparkles } from 'lucide-react'
 import EditOutlineDilog from './EditOutlineDilog'
 import { Item } from '@radix-ui/react-select'
 
