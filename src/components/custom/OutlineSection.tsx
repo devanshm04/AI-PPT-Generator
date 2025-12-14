@@ -2,7 +2,7 @@ import React from 'react'
 import { Skeleton } from '../ui/skeleton'
 import type { Outline } from 'workspace/project/outline'
 import { Button } from '../ui/button'
-import { Edit, Ghost } from 'lucide-react'
+import { ArrowRight, Edit, Ghost, Sparkle, Sparkles } from 'lucide-react'
 
 type Props={
    loading : boolean
@@ -37,7 +37,10 @@ const OutlineSection = ({loading,outline}:Props) => {
                 </div>
             ))}
         </div>
-
+          <Button size={'lg'} className='fixed bottom-6
+          transform left-1/2 -translate-x-1/2'>
+            Generate Sliders <ArrowRight/>
+          </Button>
     </div>
   )
 }
