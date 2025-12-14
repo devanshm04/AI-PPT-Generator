@@ -45,7 +45,7 @@ const Outline = () => {
   const {projectId}=useParams();
   const [projectDetail,setProjectDetail]=useState<Project>();
   const [Loading,setLoading] = useState(false);
-  const [Outline,setOutline] = useState<Outline[]>();
+  const [Outline,setOutline] = useState<Outline[]>([]);
 
    useEffect(()=>{
        projectId && GetProjectDetails();
@@ -81,12 +81,26 @@ const Outline = () => {
   setOutline(JSONData);
   setLoading(false);
   }
+
+    const handleUpdateOutline=(index:string,value:Outline)=>{
+      setOutline((prev)=>
+      prev.map((item)=>
+      item.slideNo==index?{...item,...value}:item
+    )
+    )
+    }
+    
+    const onGenerateSlider=()=>{
+      
+    }
+
   return (
     <div className='flex justify-center'>
       <div className='max-w-3xl w-full'>
         <h2 className='font-bold text-2xl'>Settings and Sliders</h2>
         <SliderStyle/>
-        <OutlineSection loading={Loading} outline={Outline ||[]}/>
+        <OutlineSection loading={Loading} outline={Outline ||[]}
+         handleUpdateOutline={(index:string,value:Outline)=>handleUpdateOutline(index,value)}/>
       </div>
       </div>
   )

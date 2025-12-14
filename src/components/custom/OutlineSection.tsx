@@ -3,13 +3,23 @@ import { Skeleton } from '../ui/skeleton'
 import type { Outline } from 'workspace/project/outline'
 import { Button } from '../ui/button'
 import { ArrowRight, Edit, Ghost, Sparkle, Sparkles } from 'lucide-react'
+import EditOutlineDilog from './EditOutlineDilog'
+import { Item } from '@radix-ui/react-select'
+
+// index.tsx se data + function lena
+
+// Slides ka UI dikhana
+
+// Function ko aur neeche child ko dena
+
 
 type Props={
    loading : boolean
    outline : Outline[]
+   handleUpdateOutline : any
 }
 
-const OutlineSection = ({loading,outline}:Props) => {
+const OutlineSection = ({loading,outline,handleUpdateOutline}:Props) => {
   return (
     <div className='mt-7'>
         <h2 className='font-bold text-xl'>Sliders Outline</h2>
@@ -31,16 +41,24 @@ const OutlineSection = ({loading,outline}:Props) => {
                     <p>{item.outline}</p>
                     </div>
                     </div>
-                         
-                    <Button variant={'ghost'} size={'icon-sm'} >  <Edit/> </Button>
-
+ {/* Ye lo slide ka data,
+aur jab update karna ho to ye function call kar dena */}
+{/* Here, the parent component passes a callback function (handleUpdateOutline)
+to the child component as a prop (onUpdate) so that the child can notify the parent when 
+the outline data needs to be updated. */}
+                       <EditOutlineDilog outlineData={item} onUpdate={handleUpdateOutline}> 
+                    <Button variant={'ghost'} size={'icon-lg'} >  <Edit/> </Button>
+                       </EditOutlineDilog> 
                 </div>
             ))}
         </div>
-          <Button size={'lg'} className='fixed bottom-6
+              
+            <Button size={'lg'} className='fixed bottom-6
           transform left-1/2 -translate-x-1/2'>
             Generate Sliders <ArrowRight/>
           </Button>
+
+          
     </div>
   )
 }
