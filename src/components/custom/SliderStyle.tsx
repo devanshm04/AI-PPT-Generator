@@ -90,9 +90,6 @@ const Design_Styles=
   }
 ]
 
-type props={
-   selectStyle:any
-}
 export type DesignStyle=
  {
     styleName:string,
@@ -102,6 +99,17 @@ export type DesignStyle=
     bannerImage:any
 
    }
+// Is component ko ek function milega jiska naam selectStyle hoga
+// jo DesignStyle type ka data lega
+// aur kuch return nahi karega
+type props={
+   selectStyle:(style: DesignStyle) => void
+}
+// selectStyle ek callback function hai
+// Child (SliderStyle) parent ko inform kar raha hai
+// User ne ye design select kiya hai
+
+
 
 const SliderStyle = ({selectStyle}:props) => {
     const[selectedStyle,setSelectedStyle] = useState<string>();
@@ -127,4 +135,12 @@ const SliderStyle = ({selectStyle}:props) => {
     </div>
   )
 }
-export default SliderStyle
+export default SliderStyle    
+
+
+// Props ke through jaane wale functions = callbacks
+// User actions pe chalne wale functions = callbacks
+// React / Firebase jo baad me call kare = callbacks
+// The code uses callback functions to enable child-to-parent communication for 
+// design selection and outline updates, as well as event callbacks for handling user interactions and lifecycle events.
+// 
