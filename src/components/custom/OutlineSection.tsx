@@ -53,10 +53,7 @@ the outline data needs to be updated. */}
             ))}
         </div>
               
-            <Button size={'lg'} className='fixed bottom-6
-          transform left-1/2 -translate-x-1/2'>
-            Generate Sliders <ArrowRight/>
-          </Button>
+          
 
           
     </div>

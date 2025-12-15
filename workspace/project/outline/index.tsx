@@ -1,9 +1,11 @@
 import { firebaseDB, GeminiAimodel } from './../../../config/FirebaseConfig';
-import { doc,getDoc } from 'firebase/firestore';
+import { doc,getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
-import SliderStyle from '../../../src/components/custom/SliderStyle';
+import SliderStyle, { type DesignStyle } from '../../../src/components/custom/SliderStyle';
 import OutlineSection from '../../../src/components/custom/OutlineSection'
+import { ArrowRight, Loader2Icon, Merge } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const OUTLINE_PROMPT=`
 Generate a PowerPoint slide outline for the topic {userInput}. Create {noofslide} in total. Each slide should include a topic name and a 2-line descriptive outline that clearly explains what content the slide will cover.
@@ -46,6 +48,8 @@ const Outline = () => {
   const [projectDetail,setProjectDetail]=useState<Project>();
   const [Loading,setLoading] = useState(false);
   const [Outline,setOutline] = useState<Outline[]>([]);
+  const [selectedStyle,setselectedStyle] = useState<DesignStyle>()
+  const [dbloading,setdbLoading]=useState(false);
 
    useEffect(()=>{
        projectId && GetProjectDetails();
@@ -90,18 +94,39 @@ const Outline = () => {
     )
     }
     
-    // const onGenerateSlider=()=>{
-
-    // }
+    const handleSelectStyle=(style:DesignStyle)=>{
+      setselectedStyle(style);
+    }
+    
+    const onGenerateSlider=async()=>{
+       setdbLoading(true);
+        // update db
+        if(!projectId || !selectedStyle) return;
+        await setDoc(doc(firebaseDB,'projects',projectId),{
+          designstyle:selectedStyle,
+          outline:Outline
+        },{
+          merge:true
+        })
+        setdbLoading(false);
+    }
 
   return (
     <div className='flex justify-center'>
       <div className='max-w-3xl w-full'>
         <h2 className='font-bold text-2xl'>Settings and Sliders</h2>
-        <SliderStyle/>
+        <SliderStyle selectStyle={handleSelectStyle}/>
         <OutlineSection loading={Loading} outline={Outline ||[]}
          handleUpdateOutline={(index:string,value:Outline)=>handleUpdateOutline(index,value)}/>
       </div>
+        <Button size={'lg'} className='fixed bottom-6
+          transform left-1/2 -translate-x-1/2'
+          onClick={onGenerateSlider}
+          disabled={dbloading || Loading}
+          >
+            {dbloading&&<Loader2Icon className='animate-spin'/>}
+            Generate Sliders <ArrowRight/>
+          </Button>
       </div>
   )
 }

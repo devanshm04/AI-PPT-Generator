@@ -90,9 +90,20 @@ const Design_Styles=
   }
 ]
 
+type props={
+   selectStyle:any
+}
+export type DesignStyle=
+ {
+    styleName:string,
+    colors:any,
+    designGuide:string,
+    icon:string,
+    bannerImage:any
 
+   }
 
-const SliderStyle = () => {
+const SliderStyle = ({selectStyle}:props) => {
     const[selectedStyle,setSelectedStyle] = useState<string>();
   return (
     <div className='mt-5'>
@@ -102,7 +113,7 @@ const SliderStyle = () => {
                 <div
                   key={index}
                   className={`cursor-pointer ${design.styleName === selectedStyle ? 'p-1 rounded-2xl border-2' : ''}`}
-                  onClick={()=>setSelectedStyle(design.styleName)}
+                  onClick={()=>{setSelectedStyle(design.styleName);selectStyle(design)}}
                 >
                     <img src={design.bannerImage} alt={design.styleName}
                     width={300}
