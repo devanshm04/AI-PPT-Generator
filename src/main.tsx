@@ -9,14 +9,16 @@ import Workspace from '../workspace/index.tsx';
 import { UserDetailContext } from './../context/UserDetailContext.tsx';
 import { useState } from 'react';
 import Outline from '../workspace/project/outline/index.tsx';
+import Editor from '../workspace/project/editor/index.tsx';
 const router = createBrowserRouter([
 {path:"/", element:<App/>} ,
 {path:"/workspace",element:<Workspace/>,
 children:[
-  {path:'project/:projectId/outline' , element: <Outline/>}
+  {path:'project/:projectId/outline' , element: <Outline/>},
+  {path:'project/:projectId/editor' , element: <Editor/>}
 ]
 }
-]);
+] );
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY

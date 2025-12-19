@@ -2,10 +2,10 @@ import { firebaseDB, GeminiAimodel } from './../../../config/FirebaseConfig';
 import { doc,getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
-import SliderStyle, { type DesignStyle } from '../../../src/components/custom/SliderStyle';
+import SliderStyle, {} from '../../../src/components/custom/SliderStyle';
 import OutlineSection from '../../../src/components/custom/OutlineSection'
 import { ArrowRight, Loader2Icon, Merge } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../src/components/ui/button';
 
 const OUTLINE_PROMPT=`
 Generate a PowerPoint slide outline for the topic {userInput}. Create {noofslide} in total. Each slide should include a topic name and a 2-line descriptive outline that clearly explains what content the slide will cover.
@@ -23,22 +23,29 @@ Return the response only in JSON format, following this schema:
 ]
 `
 
-type Project={
+export type Project={
    userInputPrompt:string,
    projectId:string,
    createdBy:string,
    createdAt:number,
    noofslider:string,
    outline:Outline[],
+   slides:any[],
+   designstyle:DesignStyle,
 }
 
 export type Outline={
   slideNo:string,
   slidePoint:string,
   outline:string,
+ 
 }
 
-
+export type DesignStyle={
+    colors: any,
+    designGuide: string,
+    styleName: string
+}
 
 
 
