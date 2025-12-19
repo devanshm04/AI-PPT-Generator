@@ -313,39 +313,36 @@ function Editor() {
 
     const GeminiSlideCall = async (prompt: string, index: number) => {
         try {
-            const session = await GeminiAiLiveModel.connect();
-            await session.send(prompt);
-
             let text = "";
 
-            // Read stream
-            for await (const message of session.receive()) {
-                if (message.type === "serverContent") {
-                    const parts = message.modelTurn?.parts;
-                    if (parts && parts.length > 0) {
-                        text += parts?.map((p) => p.text).join("");
+            // Get stream from Claude
+            const stream = await GeminiAiLiveModel.connect().then(session => session.send(prompt));
 
-                        const finalText = text
-                            .replace(/```html/g, "")
-                            .replace(/```/g, "")
-                            .trim();
+            // Iterate through stream events
+            for await (const event of stream) {
+                // Handle content block delta (actual text chunks)
+                if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+                    text += event.delta.text;
 
-                        // Live update the slider
-                        setSliders((prev: any[]) => {
-                            const updated = prev ? [...prev] : [];
-                            updated[index] = { code: finalText };
-                            return updated;
-                        });
-                    }
+                    const finalText = text
+                        .replace(/```html/g, "")
+                        .replace(/```/g, "")
+                        .trim();
 
-                    if (message.turnComplete) {
-                        console.log("✅ Slide", index + 1, "complete");
-                        break; // important: exit loop when done
-                    }
+                    // Live update the slider
+                    setSliders((prev: any[]) => {
+                        const updated = prev ? [...prev] : [];
+                        updated[index] = { code: finalText };
+                        return updated;
+                    });
+                }
+
+                // Handle message stop
+                if (event.type === "message_stop") {
+                    console.log("✅ Slide", index + 1, "complete");
+                    break; // exit loop when done
                 }
             }
-
-            session.close();
         } catch (err) {
             console.error("❌ Error generating slide", index + 1, err);
         }
